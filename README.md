@@ -1,47 +1,52 @@
-# 英语学习APP
+# EnglishForge - 英语锻造坊
 
-一个现代化的在线英语学习应用，帮助您更高效地学习英语单词和句子。
+一个现代化的英语学习Web应用，通过智能词库管理和练习模式来锻造你的英语技能。
+
+🌐 **在线访问**: https://juanqinliu.github.io/EnglishLearning/
 
 ## 功能特性
 
-### 📚 词库管理
-- ✅ 创建多个自定义词库
-- ✅ 添加单词和句子（支持中英文对照）
-- ✅ 查看、编辑和删除词条
-- ✅ 导入/导出词库（JSON格式）
+- 📚 **智能词库管理** - 支持多种格式的词库导入
+- 🎯 **练习模式** - 英译中练习，实时反馈
+- 🔊 **语音支持** - 文本转语音功能
+- 💾 **本地存储** - 数据保存在浏览器中
+- 📱 **响应式设计** - 支持各种设备
+- 🚀 **自动部署** - GitHub Actions自动化部署
 
-### 🎓 智能学习
-- ✅ 随机抽取练习模式
-- ✅ 看中文写英文练习
-- ✅ 实时判断答案正确性
-- ✅ 答案相似度分析
-- ✅ 学习统计（正确率、答题数量等）
+## 项目结构
 
-### 🔊 语音功能
-- ✅ 英文发音朗读（Web Speech API）
-- ✅ 支持单词和句子发音
-
-### 🤖 AI助手（可选）
-- ✅ 错误答案分析
-- ✅ 用法说明和建议
-- ✅ 更地道的表达方式推荐
-- ✅ 相关例句提供
-- 需要配置OpenAI API密钥
+```
+EnglishLearning/
+├── src/                    # 源代码
+│   ├── components/         # React组件
+│   ├── utils/             # 工具函数
+│   ├── data/              # 数据文件
+│   └── types.ts           # 类型定义
+├── public/                # 静态资源
+├── scripts/               # 开发脚本
+│   ├── convert-txt-to-json.js
+│   └── convert-vocabulary.js
+├── docs/                  # 文档和示例
+│   └── example-vocabulary.json
+├── config/                # 配置文件
+│   ├── netlify.toml
+│   └── vercel.json
+├── WordFactory/           # 词库数据
+├── .github/workflows/     # GitHub Actions
+└── 配置文件...
+```
 
 ## 技术栈
 
 - **前端框架**: React 18 + TypeScript
 - **构建工具**: Vite
-- **样式**: Tailwind CSS
-- **图标**: Lucide React
-- **数据存储**: LocalStorage
-- **语音合成**: Web Speech API
-- **AI功能**: OpenAI API（可选）
+- **样式框架**: TailwindCSS
+- **图标库**: Lucide React
+- **部署平台**: GitHub Pages
 
-## 快速开始
+## 开发指南
 
 ### 安装依赖
-
 ```bash
 npm install
 ```
@@ -66,79 +71,14 @@ npm run build
 npm run preview
 ```
 
-## 使用指南
 
-### 1. 创建词库
+## 部署
 
-1. 点击"词库管理"标签
-2. 点击"新建"按钮创建词库
-3. 输入词库名称
-
-### 2. 添加词条
-
-1. 选择一个词库
-2. 点击"添加词条"按钮
-3. 输入中文和英文
-4. 选择类型（单词/句子）
-5. 点击"添加"
-
-### 3. 开始练习
-
-1. 点击"开始练习"标签
-2. 选择要练习的词库
-3. 看中文提示，输入英文答案
-4. 点击"提交答案"查看结果
-5. 可以点击"发音"按钮听英文发音
-
-### 4. 使用AI助手（可选）
-
-1. 在答错题目后，点击"AI助手分析"
-2. 首次使用需要输入OpenAI API密钥
-3. 点击"开始AI分析"获取详细分析
-
-## 数据导入/导出
-
-### 导出词库
-
-点击"导出词库"按钮，所有词库将被导出为JSON文件
-
-### 导入词库
-
-点击"导入词库"按钮，选择之前导出的JSON文件
-
-### 词库格式示例
-
-```json
-[
-  {
-    "id": "1234567890",
-    "name": "日常用语",
-    "items": [
-      {
-        "id": "1234567891",
-        "chinese": "你好",
-        "english": "Hello",
-        "type": "word",
-        "createdAt": 1234567890000
-      }
-    ],
-    "createdAt": 1234567890000
-  }
-]
-```
-
-## 浏览器支持
-
-- Chrome/Edge (推荐)
-- Firefox
-- Safari
-
-注意：语音功能需要浏览器支持Web Speech API
+项目使用GitHub Actions自动部署到GitHub Pages：
+1. 推送代码到main分支
+2. 自动触发构建和部署
+3. 部署完成后可通过GitHub Pages访问
 
 ## 许可证
 
-MIT
-
-## 贡献
-
-欢迎提交Issue和Pull Request！
+MIT License

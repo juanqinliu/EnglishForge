@@ -1,12 +1,14 @@
 {
-  "name": "english-learning-app",
+  "name": "english-forge",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "convert:txt": "node scripts/convert-txt-to-json.js",
+    "convert:vocab": "node scripts/convert-vocabulary.js"
   },
   "dependencies": {
     "lucide-react": "^0.294.0",
