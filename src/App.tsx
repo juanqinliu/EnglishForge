@@ -93,7 +93,7 @@ function App() {
       </header>
 
       {/* 主内容区域 */}
-      <main className="py-8">
+      <main className="pt-1 pb-8">
         {!showPractice ? (
           <LibraryManager
             libraries={libraries}
@@ -114,7 +114,7 @@ function App() {
 
       {/* 页脚 */}
       <footer className="mt-12 py-6 text-center text-gray-500 text-sm">
-        <p>英语学习APP - 让学习更高效 ✨</p>
+        <p>英语锻造坊 - 让学习更高效 ✨</p>
       </footer>
     </div>
   );
