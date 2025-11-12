@@ -246,10 +246,8 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
             <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800 mb-2">📝 支持的txt文件格式：</p>
               <div className="text-xs text-yellow-700 space-y-1">
-                <p>• 每4行为一组：英文句子、英文句子、中文翻译、英文句子</p>
-                <p>• 系统会自动去重和清理格式</p>
-                <p>• 建议文件编码为UTF-8</p>
-                <p>• 词库名称不能与现有词库重复</p>
+                <p>• 每组包含：英文句子、和中文翻译</p>
+                <p>• 系统会自动提取相关内容</p>
               </div>
             </div>
             
