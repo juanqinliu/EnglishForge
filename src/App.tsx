@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { VocabularyLibrary } from './types';
 import { LibraryManager } from './components/LibraryManager';
 import { PracticeMode } from './components/PracticeMode';
@@ -6,11 +6,16 @@ import { PracticeMode } from './components/PracticeMode';
 import { loadLibraries, saveLibraries, getOrCreateWrongLibrary } from './utils/storage';
 import { initAudio } from './utils/audioPlayer';
 import { BookOpen } from 'lucide-react';
+import { useAuth } from './context/AuthContext';
+import Login from './components/Auth/Login';
+import { pullAndMerge, pushAll } from './utils/cloudSync';
 
 function App() {
+  const { user, loading, signOutApp } = useAuth();
   const [libraries, setLibraries] = useState<VocabularyLibrary[]>([]);
   const [showPractice, setShowPractice] = useState<boolean>(false);
   const [initialLibraryId, setInitialLibraryId] = useState<string>('');
+  const pushTimerRef = useRef<number | null>(null);
 
 
   // 加载词库
@@ -51,6 +56,13 @@ function App() {
   const handleLibrariesChange = (newLibraries: VocabularyLibrary[]) => {
     setLibraries(newLibraries);
     saveLibraries(newLibraries);
+    // 登录状态下，节流推送云端
+    if (user) {
+      if (pushTimerRef.current) window.clearTimeout(pushTimerRef.current);
+      pushTimerRef.current = window.setTimeout(() => {
+        pushAll(user.uid).catch(() => {});
+      }, 1200);
+    }
   };
 
   // 开始练习
@@ -58,6 +70,27 @@ function App() {
     setInitialLibraryId(libraryId);
     setShowPractice(true);
   };
+
+  // 登录后执行一次云端拉取合并，并刷新本地状态
+  useEffect(() => {
+    if (!user) return;
+    let mounted = true;
+    (async () => {
+      try {
+        await pullAndMerge(user.uid);
+        if (mounted) {
+          const refreshed = loadLibraries();
+          // 确保错题词库存在
+          const wrongLibrary = getOrCreateWrongLibrary(refreshed);
+          const hasWrongLibrary = refreshed.some(lib => lib.id === 'global_wrong_items');
+          const finalLibs = hasWrongLibrary ? refreshed : [...refreshed, wrongLibrary];
+          setLibraries(finalLibs);
+          saveLibraries(finalLibs);
+        }
+      } catch {}
+    })();
+    return () => { mounted = false; };
+  }, [user]);
 
 
   return (
@@ -87,6 +120,14 @@ function App() {
                   返回词库管理
                 </button>
               )}
+              {user && (
+                <button
+                  onClick={() => signOutApp()}
+                  className="px-4 py-2 rounded-lg transition font-semibold bg-red-50 text-red-600 hover:bg-red-100"
+                >
+                  退出登录
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -94,19 +135,23 @@ function App() {
 
       {/* 主内容区域 */}
       <main className="pt-1 pb-8">
-        {!showPractice ? (
-          <LibraryManager
-            libraries={libraries}
-            onLibrariesChange={handleLibrariesChange}
-            onStartPractice={handleStartPractice}
-          />
+        {loading ? null : !user ? (
+          <Login />
         ) : (
-          <PracticeMode 
-            libraries={libraries} 
-            onLibrariesChange={handleLibrariesChange}
-            initialLibraryId={initialLibraryId}
-            onLibraryIdUsed={() => setInitialLibraryId('')}
-          />
+          !showPractice ? (
+            <LibraryManager
+              libraries={libraries}
+              onLibrariesChange={handleLibrariesChange}
+              onStartPractice={handleStartPractice}
+            />
+          ) : (
+            <PracticeMode 
+              libraries={libraries} 
+              onLibrariesChange={handleLibrariesChange}
+              initialLibraryId={initialLibraryId}
+              onLibraryIdUsed={() => setInitialLibraryId('')}
+            />
+          )
         )}
       </main>
 
