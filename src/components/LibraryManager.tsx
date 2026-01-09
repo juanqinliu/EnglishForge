@@ -153,7 +153,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
       const date = new Date();
       const timestamp = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}${String(date.getMinutes()).padStart(2, '0')}`;
       // Use first few words of content or just timestamp
-      const preview = textInputContent.trim().slice(0, 10).replace(/\s+/g, '_');
+      // const preview = textInputContent.trim().slice(0, 10).replace(/\s+/g, '_');
       nameToUse = `Text_${timestamp}`;
       setNewLibraryName(nameToUse);
     }
@@ -252,12 +252,29 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
   };
 
   const handleExportSingle = (library: VocabularyLibrary) => {
-    const dataStr = JSON.stringify([library], null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    // Determine export format
+    const hasAnyChinese = library.items.some(item => item.chinese && item.chinese.trim() !== '');
+
+    let content = '';
+
+    if (!hasAnyChinese) {
+      // Pure English (Read & Speak paragraphs) - just export English lines
+      // Use double newline for paragraphs if they seem to be paragraphs? 
+      // Or just single newline implies sentences.
+      content = library.items.map(item => item.english).join('\n');
+    } else {
+      // Standard format (En\nCn)
+      content = library.items.map(item => {
+        const cn = (item.chinese && item.chinese.trim()) ? item.chinese : '。';
+        return `${item.english}\n${cn}`;
+      }).join('\n');
+    }
+
+    const dataBlob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${library.name}_${Date.now()}.json`;
+    link.download = `${library.name}.txt`;
     link.click();
     URL.revokeObjectURL(url);
     setShowExportDialog(false);

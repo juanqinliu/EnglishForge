@@ -128,16 +128,7 @@ function App() {
                   返回词库管理
                 </button>
               )}
-              {user && view === 'library' && (
-                <button
-                  onClick={() => setView('read-speak')}
-                  className="flex items-center gap-2 px-6 py-2 rounded-lg transition font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-md"
-                >
-                  {/* Reuse BookOpen or pick another icon if available, standardizing on simple import */}
-                  <span>🗣️</span>
-                  Read & Speak
-                </button>
-              )}
+
               {user && (
                 <button
                   onClick={() => signOutApp()}
