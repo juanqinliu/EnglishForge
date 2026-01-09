@@ -1,0 +1,20 @@
+I'd like to check in, please.
+我想办理入住。
+I have a reservation.
+我预订了一个房间。
+May I have your name, please?
+请问您的名字？
+Do you have any rooms available?
+你们有空房间吗？
+How much is it per night?
+一晚多少钱？
+Does it include breakfast?
+包括早餐吗？
+What's my room number?
+我的房间号是多少？
+Here is your room key.
+这是您的房卡。
+What's the WiFi password?
+WiFi密码是什么？
+I'd like to check out.
+我想退房。

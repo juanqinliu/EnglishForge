@@ -23,32 +23,40 @@ function cleanChinese(text: string): string {
 /**
  * 解析txt格式的英语学习材料 - 智能识别多种格式
  */
-export function parseTxtToVocabulary(content: string, libraryName: string): VocabularyLibrary {
+export function parseTxtToVocabulary(
+  content: string,
+  libraryName: string,
+  id?: string,
+  category: 'dictation' | 'read-speak' = 'dictation'
+): VocabularyLibrary {
   const lines = content.split('\n').map(line => line.trim()).filter(line => line.length > 0);
   const items: VocabularyItem[] = [];
-  
+
+
+
+
   let i = 0;
   while (i < lines.length) {
     const currentLine = lines[i];
-    
+
     // 跳过空行或无效行
     if (!currentLine || currentLine.length < 2) {
       i++;
       continue;
     }
-    
+
     // 检查是否是英文行（以字母开头，长度大于3）
     if (/^[a-zA-Z]/.test(currentLine) && currentLine.length > 3) {
       let english = cleanEnglish(currentLine);
       let chinese = '';
       let matched = false;
-      
+
       // 模式1：4行模式 (英文 -> 英文重复 -> 中文 -> 英文重复)
       if (i + 3 < lines.length && !matched) {
         const line2 = lines[i + 1];
         const line3 = lines[i + 2];
         const line4 = lines[i + 3];
-        
+
         if (currentLine === line2 && currentLine === line4 && /[\u4e00-\u9fff]/.test(line3)) {
           chinese = cleanChinese(line3);
           if (english && chinese && english.length > 2 && chinese.length > 0) {
@@ -64,12 +72,12 @@ export function parseTxtToVocabulary(content: string, libraryName: string): Voca
           }
         }
       }
-      
+
       // 模式2：3行模式 (英文 -> 英文重复 -> 中文)
       if (i + 2 < lines.length && !matched) {
         const line2 = lines[i + 1];
         const line3 = lines[i + 2];
-        
+
         if (currentLine === line2 && /[\u4e00-\u9fff]/.test(line3)) {
           chinese = cleanChinese(line3);
           if (english && chinese && english.length > 2 && chinese.length > 0) {
@@ -85,11 +93,11 @@ export function parseTxtToVocabulary(content: string, libraryName: string): Voca
           }
         }
       }
-      
+
       // 模式3：2行模式 (英文 -> 中文)
       if (i + 1 < lines.length && !matched) {
         const nextLine = lines[i + 1];
-        
+
         if (/[\u4e00-\u9fff]/.test(nextLine)) {
           chinese = cleanChinese(nextLine);
           if (english && chinese && english.length > 2 && chinese.length > 0) {
@@ -105,7 +113,7 @@ export function parseTxtToVocabulary(content: string, libraryName: string): Voca
           }
         }
       }
-      
+
       // 如果没有匹配任何模式，跳到下一行
       if (!matched) {
         i++;
@@ -114,17 +122,45 @@ export function parseTxtToVocabulary(content: string, libraryName: string): Voca
       i++;
     }
   }
-  
+
+  // 如果没有匹配到标准格式（英汉对照），尝试识别为纯英文段落
+  if (items.length === 0) {
+    // Check if content has substantial text but no English-Chinese patter matching
+    // Reuse logic from parseParagraphToVocabulary but adapted here
+    const sentences = content.match(/[^.!?。！？]+[.!?。！？]+["']?|[^.!?。！？]+$/g) || [];
+    const paragraphItems = sentences
+      .map(s => s.trim())
+      .filter(s => s.length > 5) // Filter out very short noise
+      .map(sentence => ({
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+        english: sentence,
+        chinese: '',
+        type: 'sentence' as const,
+        createdAt: Date.now(),
+      }));
+
+    if (paragraphItems.length > 0) {
+      return {
+        id: id || Date.now().toString(),
+        name: libraryName,
+        createdAt: Date.now(),
+        items: paragraphItems,
+        category: category // Use passed category
+      };
+    }
+  }
+
   // 去重：基于英文内容
-  const uniqueItems = items.filter((item, index, self) => 
+  const uniqueItems = items.filter((item, index, self) =>
     index === self.findIndex(t => t.english.toLowerCase().replace(/[.?!]/g, '') === item.english.toLowerCase().replace(/[.?!]/g, ''))
   );
-  
+
   return {
-    id: Date.now().toString(),
+    id: id || Date.now().toString(),
     name: libraryName,
     createdAt: Date.now(),
-    items: uniqueItems
+    items: uniqueItems,
+    category: category
   };
 }
 
@@ -133,13 +169,13 @@ export function parseTxtToVocabulary(content: string, libraryName: string): Voca
  */
 export function detectTxtFormat(content: string): boolean {
   const lines = content.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-  
+
   if (lines.length < 2) return false;
-  
+
   // 检查是否有英中对照内容
   let hasEnglish = false;
   let hasChinese = false;
-  
+
   for (const line of lines.slice(0, 20)) { // 检查前20行
     if (/^[a-zA-Z]/.test(line) && line.length > 3) {
       hasEnglish = true;
@@ -148,6 +184,34 @@ export function detectTxtFormat(content: string): boolean {
       hasChinese = true;
     }
   }
-  
+
   return hasEnglish && hasChinese;
+}
+
+/**
+ * 解析段落文本为词库（用于听说练习）
+ * 将文本按句子分割
+ */
+export function parseParagraphToVocabulary(content: string, libraryName: string): VocabularyLibrary {
+  // 简单的句子分割正则：匹配以!?.;结尾的句子，或者最后一段
+  const sentences = content.match(/[^.!?。！？]+[.!?。！？]+["']?|[^.!?。！？]+$/g) || [];
+
+  const items: VocabularyItem[] = sentences
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .map(sentence => ({
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      english: sentence,
+      chinese: '', // 听说练习通常只关注英文输入
+      type: 'sentence',
+      createdAt: Date.now(),
+    }));
+
+  return {
+    id: Date.now().toString(),
+    name: libraryName,
+    createdAt: Date.now(),
+    items: items,
+    category: 'read-speak'
+  };
 }

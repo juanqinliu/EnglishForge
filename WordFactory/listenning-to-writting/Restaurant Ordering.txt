@@ -1,0 +1,20 @@
+Can I see the menu, please?
+我可以看一下菜单吗？
+Are you ready to order?
+你准备好点餐了吗？
+I'd like a steak, please.
+我想要一份牛排。
+What would you like to drink?
+你想要什么饮料？
+I'll have an orange juice.
+我要一杯橙汁。
+What are your specialties?
+你们有什么特色菜？
+I recommend today's special.
+我推荐今天的特色菜。
+Can I have the bill, please?
+请给我账单。
+Can I pay by credit card?
+我可以用信用卡支付吗？
+The food was delicious!
+食物很美味！

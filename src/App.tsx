@@ -8,24 +8,27 @@ import { initAudio } from './utils/audioPlayer';
 import { BookOpen } from 'lucide-react';
 import { useAuth } from './context/AuthContext';
 import Login from './components/Auth/Login';
+import { ReadAndSpeakMode } from './components/ReadAndSpeak/ReadAndSpeakMode';
 import { pullAndMerge, pushAll } from './utils/cloudSync';
 
 function App() {
   const { user, loading, signOutApp } = useAuth();
   const [libraries, setLibraries] = useState<VocabularyLibrary[]>([]);
-  const [showPractice, setShowPractice] = useState<boolean>(false);
+  const [view, setView] = useState<'library' | 'practice' | 'read-speak'>('library');
   const [initialLibraryId, setInitialLibraryId] = useState<string>('');
+  const [readSpeakLibraryId, setReadSpeakLibraryId] = useState<string>('');
+
   const pushTimerRef = useRef<number | null>(null);
 
 
   // 加载词库
   useEffect(() => {
     const loaded = loadLibraries();
-    
+
     // 确保错题词库存在
     const wrongLibrary = getOrCreateWrongLibrary(loaded);
     const hasWrongLibrary = loaded.some(lib => lib.id === 'global_wrong_items');
-    
+
     if (!hasWrongLibrary) {
       const updatedLibraries = [...loaded, wrongLibrary];
       setLibraries(updatedLibraries);
@@ -60,7 +63,7 @@ function App() {
     if (user) {
       if (pushTimerRef.current) window.clearTimeout(pushTimerRef.current);
       pushTimerRef.current = window.setTimeout(() => {
-        pushAll(user.uid).catch(() => {});
+        pushAll(user.uid).catch(() => { });
       }, 1200);
     }
   };
@@ -68,7 +71,12 @@ function App() {
   // 开始练习
   const handleStartPractice = (libraryId: string) => {
     setInitialLibraryId(libraryId);
-    setShowPractice(true);
+    setView('practice');
+  };
+
+  const handleStartReadSpeak = (libraryId: string) => {
+    setReadSpeakLibraryId(libraryId);
+    setView('read-speak');
   };
 
   // 登录后执行一次云端拉取合并，并刷新本地状态
@@ -87,7 +95,7 @@ function App() {
           setLibraries(finalLibs);
           saveLibraries(finalLibs);
         }
-      } catch {}
+      } catch { }
     })();
     return () => { mounted = false; };
   }, [user]);
@@ -111,13 +119,23 @@ function App() {
               </div>
             </div>
             <div className="flex gap-2">
-              {showPractice && (
+              {user && view !== 'library' && (
                 <button
-                  onClick={() => setShowPractice(false)}
+                  onClick={() => setView('library')}
                   className="flex items-center gap-2 px-6 py-2 rounded-lg transition font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200"
                 >
                   <BookOpen className="w-5 h-5" />
                   返回词库管理
+                </button>
+              )}
+              {user && view === 'library' && (
+                <button
+                  onClick={() => setView('read-speak')}
+                  className="flex items-center gap-2 px-6 py-2 rounded-lg transition font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-md"
+                >
+                  {/* Reuse BookOpen or pick another icon if available, standardizing on simple import */}
+                  <span>🗣️</span>
+                  Read & Speak
                 </button>
               )}
               {user && (
@@ -138,20 +156,30 @@ function App() {
         {loading ? null : !user ? (
           <Login />
         ) : (
-          !showPractice ? (
-            <LibraryManager
-              libraries={libraries}
-              onLibrariesChange={handleLibrariesChange}
-              onStartPractice={handleStartPractice}
-            />
-          ) : (
-            <PracticeMode 
-              libraries={libraries} 
-              onLibrariesChange={handleLibrariesChange}
-              initialLibraryId={initialLibraryId}
-              onLibraryIdUsed={() => setInitialLibraryId('')}
-            />
-          )
+          <>
+            {view === 'library' && (
+              <LibraryManager
+                libraries={libraries}
+                onLibrariesChange={handleLibrariesChange}
+                onStartPractice={handleStartPractice}
+                onStartReadSpeak={handleStartReadSpeak}
+              />
+            )}
+            {view === 'practice' && (
+              <PracticeMode
+                libraries={libraries}
+                onLibrariesChange={handleLibrariesChange}
+                initialLibraryId={initialLibraryId}
+                onLibraryIdUsed={() => setInitialLibraryId('')}
+              />
+            )}
+            {view === 'read-speak' && (
+              <ReadAndSpeakMode
+                library={libraries.find(l => l.id === readSpeakLibraryId)}
+                onBack={() => setView('library')}
+              />
+            )}
+          </>
         )}
       </main>
 

@@ -1,0 +1,20 @@
+Hello, this is Tom speaking.
+你好，我是汤姆。
+Who is calling, please?
+请问是谁？
+May I speak to John?
+我能和约翰通话吗？
+Hold on, please.
+请稍等。
+He's not available right now.
+他现在不在。
+Would you like to leave a message?
+你需要留言吗？
+Please ask him to call me back.
+请让他给我回电话。
+You have the wrong number.
+你打错了。
+The signal is bad.
+信号不好。
+I'll call you back later.
+待会儿再打给你。

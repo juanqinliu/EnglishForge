@@ -28,8 +28,30 @@ export const loadLibraries = (): VocabularyLibrary[] => {
       saveLibraries(defaultLibraries);
       return defaultLibraries;
     }
+    // Always load default libraries from file system
+    const systemLibraries = defaultLibraries;
+
+    // Load user stored libraries
     const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+    const storedLibraries: VocabularyLibrary[] = data ? JSON.parse(data) : [];
+
+    // Filter out stored libraries that conflict with system libraries (by ID) to allow system updates
+    // Or simpler: just append user custom libraries. 
+    // Assuming user custom libraries have random IDs, they won't conflict with our 'speak_'/'write_' stable IDs.
+    // If a system library was modified by user (stored in localStorage), we might want to keep user version?
+    // User requirement: "All users can use our set libraries... put content in folder". Implies folder is source of truth.
+
+    const userLibraries = storedLibraries.filter(stored =>
+      !systemLibraries.some(sys => sys.id === stored.id)
+    );
+
+    const merged = [...systemLibraries, ...userLibraries];
+
+    // Sync back to storage if needed, or just return merged (safer to just return)
+    // If we save back immediately, we might persist duplicates if logic is wrong.
+    // Let's just return merged list for now.
+
+    return merged;
   } catch (error) {
     console.error('加载词库失败:', error);
     return [];
@@ -125,7 +147,7 @@ export const clearWrongItems = (libraryId: string) => {
 export const getOrCreateWrongLibrary = (libraries: VocabularyLibrary[]): VocabularyLibrary => {
   // 查找是否已存在错题词库
   let wrongLibrary = libraries.find(lib => lib.id === WRONG_LIBRARY_ID);
-  
+
   if (!wrongLibrary) {
     // 创建新的错题词库
     wrongLibrary = {
@@ -135,28 +157,28 @@ export const getOrCreateWrongLibrary = (libraries: VocabularyLibrary[]): Vocabul
       items: []
     };
   }
-  
+
   return wrongLibrary;
 };
 
 export const addItemToWrongLibrary = (libraries: VocabularyLibrary[], item: any, sourceLibraryName: string): VocabularyLibrary[] => {
   const updatedLibraries = [...libraries];
   let wrongLibraryIndex = updatedLibraries.findIndex(lib => lib.id === WRONG_LIBRARY_ID);
-  
+
   if (wrongLibraryIndex === -1) {
     // 错题词库不存在，创建它
     const wrongLibrary = getOrCreateWrongLibrary(libraries);
     updatedLibraries.push(wrongLibrary);
     wrongLibraryIndex = updatedLibraries.length - 1;
   }
-  
+
   const wrongLibrary = updatedLibraries[wrongLibraryIndex];
-  
+
   // 检查是否已存在相同的题目
-  const existingItem = wrongLibrary.items.find(existingItem => 
+  const existingItem = wrongLibrary.items.find(existingItem =>
     existingItem.english === item.english && existingItem.chinese === item.chinese
   );
-  
+
   if (!existingItem) {
     // 添加新的错题，包含来源信息
     const wrongItem = {
@@ -165,22 +187,22 @@ export const addItemToWrongLibrary = (libraries: VocabularyLibrary[], item: any,
       chinese: `${item.chinese} (来源: ${sourceLibraryName})`,
       createdAt: Date.now()
     };
-    
+
     wrongLibrary.items.unshift(wrongItem); // 添加到开头
   }
-  
+
   return updatedLibraries;
 };
 
 export const removeItemFromWrongLibrary = (libraries: VocabularyLibrary[], itemId: string): VocabularyLibrary[] => {
   const updatedLibraries = [...libraries];
   const wrongLibraryIndex = updatedLibraries.findIndex(lib => lib.id === WRONG_LIBRARY_ID);
-  
+
   if (wrongLibraryIndex !== -1) {
     const wrongLibrary = updatedLibraries[wrongLibraryIndex];
     wrongLibrary.items = wrongLibrary.items.filter(item => item.id !== itemId);
   }
-  
+
   return updatedLibraries;
 };
 
@@ -230,7 +252,7 @@ export const savePracticeProgress = (progress: PracticeProgress): void => {
           localStorage.setItem(PRACTICE_PROGRESS_KEY, JSON.stringify(merged));
           return;
         }
-      } catch {}
+      } catch { }
     }
     // 没有可合并的数据，或词库不同，直接保存
     localStorage.setItem(PRACTICE_PROGRESS_KEY, JSON.stringify({ ...progress, timestamp: Date.now() }));
@@ -243,17 +265,17 @@ export const loadPracticeProgress = (): PracticeProgress | null => {
   try {
     const data = localStorage.getItem(PRACTICE_PROGRESS_KEY);
     if (!data) return null;
-    
+
     const progress = JSON.parse(data);
     // 检查进度是否过期（超过24小时）
     const now = Date.now();
     const maxAge = 24 * 60 * 60 * 1000; // 24小时
-    
+
     if (now - progress.timestamp > maxAge) {
       clearPracticeProgress();
       return null;
     }
-    
+
     return progress;
   } catch (error) {
     console.error('加载练习进度失败:', error);
