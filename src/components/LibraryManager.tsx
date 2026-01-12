@@ -3,6 +3,7 @@ import { VocabularyLibrary, VocabularyItem } from '../types';
 import { Plus, Trash2, Download, Upload, BookOpen, FileText, Wand2 } from 'lucide-react';
 import { smartExtractWords } from '../utils/wordExtractor';
 import { parseTxtToVocabulary, parseParagraphToVocabulary, detectTxtFormat } from '../utils/txtParser';
+import { addDeletedLibraryId } from '../utils/storage';
 
 interface LibraryManagerProps {
   libraries: VocabularyLibrary[];
@@ -77,6 +78,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
         }
 
         // 添加到词库列表
+        newLibrary.updatedAt = Date.now();
         onLibrariesChange([...libraries, newLibrary]);
 
         // 重置状态
@@ -129,6 +131,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
           return;
         }
 
+        newLibrary.updatedAt = Date.now();
         onLibrariesChange([...libraries, newLibrary]);
         setNewLibraryName('');
         setShowAddLibrary(false);
@@ -174,6 +177,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
         return;
       }
 
+      newLibrary.updatedAt = Date.now();
       onLibrariesChange([...libraries, newLibrary]);
       setNewLibraryName('');
       setTextInputContent('');
@@ -189,6 +193,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
 
   const handleDeleteLibrary = (id: string) => {
     if (confirm('确定要删除这个词库吗？')) {
+      addDeletedLibraryId(id);
       onLibrariesChange(libraries.filter(lib => lib.id !== id));
       if (selectedLibraryId === id) {
         setSelectedLibraryId('');
@@ -212,6 +217,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
         return {
           ...lib,
           items: [...lib.items, newItem],
+          updatedAt: Date.now(),
         };
       }
       return lib;
@@ -231,6 +237,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
         return {
           ...lib,
           items: lib.items.filter(item => item.id !== itemId),
+          updatedAt: Date.now(),
         };
       }
       return lib;
@@ -303,6 +310,7 @@ export const LibraryManager: React.FC<LibraryManagerProps> = ({
       createdAt: Date.now(),
     };
 
+    newLibrary.updatedAt = Date.now();
     onLibrariesChange([...libraries, newLibrary]);
     alert(`成功提取 ${extractedWords.length} 个单词，已创建新词库！`);
   };

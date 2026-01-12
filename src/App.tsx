@@ -5,11 +5,13 @@ import { PracticeMode } from './components/PracticeMode';
 
 import { loadLibraries, saveLibraries, getOrCreateWrongLibrary } from './utils/storage';
 import { initAudio } from './utils/audioPlayer';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useAuth } from './context/AuthContext';
 import Login from './components/Auth/Login';
 import { ReadAndSpeakMode } from './components/ReadAndSpeak/ReadAndSpeakMode';
 import { pullAndMerge, pushAll } from './utils/cloudSync';
+
+type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
 function App() {
   const { user, loading, signOutApp } = useAuth();
@@ -17,6 +19,8 @@ function App() {
   const [view, setView] = useState<'library' | 'practice' | 'read-speak'>('library');
   const [initialLibraryId, setInitialLibraryId] = useState<string>('');
   const [readSpeakLibraryId, setReadSpeakLibraryId] = useState<string>('');
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
+  const [syncError, setSyncError] = useState<string>('');
 
   const pushTimerRef = useRef<number | null>(null);
 
@@ -62,8 +66,19 @@ function App() {
     // 登录状态下，节流推送云端
     if (user) {
       if (pushTimerRef.current) window.clearTimeout(pushTimerRef.current);
-      pushTimerRef.current = window.setTimeout(() => {
-        pushAll(user.uid).catch(() => { });
+      setSyncStatus('syncing');
+      pushTimerRef.current = window.setTimeout(async () => {
+        try {
+          await pushAll(user.uid);
+          setSyncStatus('success');
+          setSyncError('');
+          // 3秒后隐藏成功提示
+          setTimeout(() => setSyncStatus('idle'), 3000);
+        } catch (error: any) {
+          setSyncStatus('error');
+          setSyncError(error.message || '同步失败');
+          console.error('推送失败:', error);
+        }
       }, 1200);
     }
   };
@@ -83,6 +98,7 @@ function App() {
   useEffect(() => {
     if (!user) return;
     let mounted = true;
+    setSyncStatus('syncing');
     (async () => {
       try {
         await pullAndMerge(user.uid);
@@ -94,11 +110,42 @@ function App() {
           const finalLibs = hasWrongLibrary ? refreshed : [...refreshed, wrongLibrary];
           setLibraries(finalLibs);
           saveLibraries(finalLibs);
+          setSyncStatus('success');
+          setSyncError('');
+          // 3秒后隐藏成功提示
+          setTimeout(() => setSyncStatus('idle'), 3000);
         }
-      } catch { }
+      } catch (error: any) {
+        if (mounted) {
+          setSyncStatus('error');
+          setSyncError(error.message || '同步失败');
+          console.error('拉取合并失败:', error);
+        }
+      }
     })();
     return () => { mounted = false; };
   }, [user]);
+
+  // 手动同步
+  const handleManualSync = async () => {
+    if (!user || syncStatus === 'syncing') return;
+    setSyncStatus('syncing');
+    setSyncError('');
+    try {
+      await pullAndMerge(user.uid);
+      const refreshed = loadLibraries();
+      const wrongLibrary = getOrCreateWrongLibrary(refreshed);
+      const hasWrongLibrary = refreshed.some(lib => lib.id === 'global_wrong_items');
+      const finalLibs = hasWrongLibrary ? refreshed : [...refreshed, wrongLibrary];
+      setLibraries(finalLibs);
+      saveLibraries(finalLibs);
+      setSyncStatus('success');
+      setTimeout(() => setSyncStatus('idle'), 3000);
+    } catch (error: any) {
+      setSyncStatus('error');
+      setSyncError(error.message || '同步失败');
+    }
+  };
 
 
   return (
@@ -140,6 +187,48 @@ function App() {
             </div>
           </div>
         </div>
+
+        {/* 云同步状态栏 */}
+        {user && syncStatus !== 'idle' && (
+          <div className={`max-w-7xl mx-auto px-6 pb-3`}>
+            <div className={`flex items-center justify-between px-4 py-2 rounded-lg ${syncStatus === 'syncing' ? 'bg-blue-50 text-blue-700' :
+              syncStatus === 'success' ? 'bg-green-50 text-green-700' :
+                'bg-red-50 text-red-700'
+              }`}>
+              <div className="flex items-center gap-2">
+                {syncStatus === 'syncing' && <RefreshCw className="w-4 h-4 animate-spin" />}
+                {syncStatus === 'success' && <CheckCircle className="w-4 h-4" />}
+                {syncStatus === 'error' && <AlertCircle className="w-4 h-4" />}
+                <span className="text-sm font-medium">
+                  {syncStatus === 'syncing' && '正在同步云端数据...'}
+                  {syncStatus === 'success' && '✓ 数据已同步'}
+                  {syncStatus === 'error' && `同步失败: ${syncError}`}
+                </span>
+              </div>
+              {syncStatus === 'error' && (
+                <button
+                  onClick={handleManualSync}
+                  className="text-sm font-semibold hover:underline"
+                >
+                  重试
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 手动同步按钮（仅在空闲或错误时显示） */}
+        {user && (syncStatus === 'idle' || syncStatus === 'error') && (
+          <div className="max-w-7xl mx-auto px-6 pb-2">
+            <button
+              onClick={handleManualSync}
+              className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 transition disabled:opacity-50"
+            >
+              <RefreshCw className="w-3 h-3" />
+              手动同步
+            </button>
+          </div>
+        )}
       </header>
 
       {/* 主内容区域 */}

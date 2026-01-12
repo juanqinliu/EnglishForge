@@ -45,11 +45,10 @@ export const loadLibraries = (): VocabularyLibrary[] => {
       !systemLibraries.some(sys => sys.id === stored.id)
     );
 
-    const merged = [...systemLibraries, ...userLibraries];
-
-    // Sync back to storage if needed, or just return merged (safer to just return)
-    // If we save back immediately, we might persist duplicates if logic is wrong.
-    // Let's just return merged list for now.
+    const merged = [...systemLibraries, ...userLibraries].map(lib => ({
+      ...lib,
+      updatedAt: lib.updatedAt || lib.createdAt || 0
+    }));
 
     return merged;
   } catch (error) {
@@ -144,6 +143,21 @@ export const clearWrongItems = (libraryId: string) => {
 };
 
 // 全局错题词库管理
+const DELETED_LIBRARIES_KEY = 'english_learning_deleted_libraries';
+
+export const getDeletedLibraryIds = (): string[] => {
+  try {
+    const raw = localStorage.getItem(DELETED_LIBRARIES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch { return []; }
+};
+
+export const addDeletedLibraryId = (id: string) => {
+  const list = new Set(getDeletedLibraryIds());
+  list.add(id);
+  localStorage.setItem(DELETED_LIBRARIES_KEY, JSON.stringify(Array.from(list)));
+};
+
 export const getOrCreateWrongLibrary = (libraries: VocabularyLibrary[]): VocabularyLibrary => {
   // 查找是否已存在错题词库
   let wrongLibrary = libraries.find(lib => lib.id === WRONG_LIBRARY_ID);
@@ -189,6 +203,7 @@ export const addItemToWrongLibrary = (libraries: VocabularyLibrary[], item: any,
     };
 
     wrongLibrary.items.unshift(wrongItem); // 添加到开头
+    wrongLibrary.updatedAt = Date.now();
   }
 
   return updatedLibraries;
@@ -201,6 +216,7 @@ export const removeItemFromWrongLibrary = (libraries: VocabularyLibrary[], itemI
   if (wrongLibraryIndex !== -1) {
     const wrongLibrary = updatedLibraries[wrongLibraryIndex];
     wrongLibrary.items = wrongLibrary.items.filter(item => item.id !== itemId);
+    wrongLibrary.updatedAt = Date.now();
   }
 
   return updatedLibraries;

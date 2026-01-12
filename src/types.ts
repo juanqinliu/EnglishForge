@@ -12,6 +12,7 @@ export interface VocabularyLibrary {
   category?: 'dictation' | 'read-speak'; // Default to 'dictation' if undefined
   items: VocabularyItem[];
   createdAt: number;
+  updatedAt?: number;
 }
 
 export interface PracticeResult {
