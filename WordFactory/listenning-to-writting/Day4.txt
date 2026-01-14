@@ -1,0 +1,382 @@
+Can you give me a ride to the station?
+你能载我去车站吗？
+What time do we have to leave?
+我们几点得离开？
+I'll see you in an hour.
+一小时后见。
+Could you please help me with this?
+你能帮我做这件事吗？
+Where's the nearest ATM?
+最近的ATM在哪儿？
+I'm meeting a friend later.
+我待会和朋友见面。
+I need to make a phone call.
+我需要打个电话。
+What's your favorite restaurant?
+你最喜欢的餐厅是哪家？
+I forgot to bring my charger.
+我忘了带充电器。
+Could you turn off the air conditioning?
+你能关掉空调吗？
+I need to make a reservation for two.
+我需要为两人预订座位。
+Are you busy right now?
+你现在忙吗？
+I'm trying to learn English.
+我在努力学英语。
+Where can I buy some water?
+我在哪里可以买水？
+How about we meet tomorrow?
+明天见怎么样？
+I'm going to watch a movie tonight.
+我今晚要看电影。
+How far is it from here?
+离这里有多远？
+Let's go out for dinner.
+我们去外面吃晚餐吧。
+I'll take a look at it later.
+我待会儿看一下这个。
+Is it okay if I leave early?
+我早点离开可以吗？
+I'm planning to go on a trip next month.
+我打算下个月去旅行。
+I need to grab a quick snack.
+我得吃个快餐。
+Can you help me with this problem?
+你能帮我解决这个问题吗？
+What's the best way to get to the museum?
+去博物馆的最佳路线是什么？
+I'll call you when I get there.
+我到的时候给你打电话。
+Can you speak a little louder.
+你能说的大声一点吗？
+How long will it take to get there?
+到那儿需要多长时间？
+I'm still waiting for my order.
+我还在等我的订单。
+Do you know a good place for coffee?
+你知道一个好咖啡馆吗？
+I need to go to the store.
+我需要去商店。
+What time does the movie start?
+电影什么时候开始？
+I'm almost done with my work.
+我的工作快做完了。
+Could you give me a hand?
+你能帮我一把吗？
+I don't have much time today.
+我今天没有太多时间。
+I've been working all day.
+我已经工作了一整天。
+Let's meet at the cafe.
+我们在咖啡馆见面吧。
+I'll be there soon.
+我马上就到。
+Can you recommend a good book?
+你能推荐一本好书吗？
+I'm looking forward to seeing you.
+我期待见到你。
+How DOI get to the bus station?
+我怎么去公交车站？
+I forgot to bring my wallet.
+我忘了带钱包。
+What are you doing tonight?
+你今晚做什么？
+I'll be back in a few minutes.
+我几分钟后回来。
+Can you pass the salt please?
+请把盐递给我好吗？
+I have to go to the dentist tomorrow.
+我明天要去看牙医。
+I'll meet you at the park.
+我们在公园见。
+How long have you been studying English?
+你学英语多久啦？
+I need to call customer service.
+我需要打电话给客服。
+Let's go grocery shopping later.
+我们待会儿去买菜吧。
+I'm feeling really hungry.
+我现在真饿。
+I'll pick you up at six.
+6点我来接你。
+What's the quickest way to get there?
+到那儿最快的方式是什么？
+I'm looking for a good restaurant.
+我在找一家好餐厅。
+How much is the entrance fee?
+进场费用是多少？
+I'm thinking of going for a walk.
+我在考虑去散步。
+I need to clean my room.
+我需要打扫我的房间。
+Time.
+我会尽力准时到。
+Do you know a good place to eat nearby?
+你知道附近有好的餐馆吗？
+Let's get together sometime this week.
+这个星期我们找个时间见面吧。
+I'll be there in 10 minutes.
+10分钟后，我到。
+Can I use your restroom?
+我可以用一下你的洗手间吗？
+I'm not sure if I can make it.
+我不确定我能不能去。
+I'm really tired today.
+我今天真的很累。
+Could you give me some advice?
+你能给我一些建议吗？
+How long does it take to get from here to the AirPort?
+从这里到机场需要多久？
+Can you turn up the volume?
+你能把音量调高吗？
+I need to book a flight.
+我需要预订机票。
+I'm going to visit my family this weekend.
+这个周末，我要去看我的家人。
+How often do you work out?
+你多久锻炼一次？
+Let's get some snacks.
+我们去吃点零食吧。
+Do you want to come over for a movie night?
+你想过来看电影吗？
+I've got a lot of work to do today.
+今天我有很多工作要做。
+What's the best thing about your job?
+你工作的最好之处是什么？
+Can you help me find my wallet?
+你能帮我找一下钱包吗？
+I'll join you in a bit.
+我等会儿加入你们。
+Where's the nearest subway station?
+最近的地铁站在哪里？
+I'll go to the bank later.
+我待会儿去银行。
+I'm running low on cash.
+我的现金快没了。
+How long does it take to walk to the park?
+走到公园要多久？
+I think we should go shopping tomorrow.
+我觉得我们明天去购物吧。
+I can't find my keys anywhere.
+我哪里都找不到我的钥匙。
+Can you recommend a good restaurant nearby?
+你能推荐一个附近的好餐厅吗？
+Let's meet in front of the cinema at six.
+我们6点在电影院前面见吧。
+Do you want to go for a coffee?
+你想去喝咖啡吗？
+I'll text you when I arrive.
+我到的时候给你发短信。
+I'm not sure what time the event starts.
+我不确定活动开始的时间。
+I have to finish this project by tomorrow.
+我得在明天之前完成这个项目。
+Can you show me how to use this?
+你能教我怎么用这个吗？
+It's getting late. I should go home.
+天晚了，我该回家了。
+I don't have enough time for that.
+我没有足够的时间做那个。
+Can you pick me up from the AirPort?
+你能从机场接我吗？
+I'm thinking about going on vacation soon.
+我在考虑很快去度假。
+Let's take a cab instead of the bus.
+我们坐出租车去吧，别坐公交车。
+I need to make sure everything is ready.
+我需要确保一切都准备好。
+I'll bring it to you later.
+我待会儿带给你。
+Let's go for a walk around the city.
+我们去城市周围散步吧。
+I'm looking forward to this weekend.
+我期待这个周末。
+I'll call you when I'm done.
+我做完了给你打电话。
+Could you recommend a good book?
+你能推荐一本好书吗？
+I need to get some rest.
+我需要休息一下。
+What do you usually do on weekends?
+你周末通常做什么？
+Can you turn down the music?
+你能把音乐声音调小一点吗？
+I'll bring the documents tomorrow.
+我明天带上文件。
+Do you want to join me for dinner?
+你想和我一起吃晚餐吗？
+I'm looking forward to seeing you soon.
+我期待很快见到你。
+Where do you work?
+你在哪工作？
+How was your day?
+你今天过得怎么样？
+Can you help me move this table?
+你能帮我搬这张桌子吗？
+I need to pick up some groceries.
+我得去买些杂货。
+Let me know if you need anything.
+如果你需要什么，告诉我一声。
+I'll meet you at the entrance.
+我们在入口见面。
+Can I have the bill please?
+请给我账单。
+I need to charge my phone.
+我需要给手机充电。
+Let's go for a walk in the park.
+我们去公园散步吧。
+I'm going to bed early tonight.
+我今晚早点睡觉。
+What's your favorite food?
+你最喜欢的食物是什么？
+I don't understand.
+我不明白。
+Can you speak slower?
+你能说慢一点吗？
+I'll be home in 30 minutes.
+我30分钟后到家。
+Could you please repeat that.
+你能再说一遍吗？
+Let's meet at the coffee shop.
+我们在咖啡馆见面。
+What are you doing tomorrow?
+你明天做什么啊？
+I'm going to the gym this afternoon.
+我下午要去健身房。
+Can you send me the details later?
+你能稍后把细节发给我吗？
+I'm sorry I'm late.
+对不起，我迟到了。
+I'll get there in a few minutes.
+我几分钟后就到。
+Can I help you with something?
+我可以帮你做什么吗？
+Let's take a break.
+我们休息一下吧。
+Do you need any help with that?
+你需要帮忙做那个吗？
+I'm going to the supermarket.
+我去超市。
+Where can I find a taxi?
+我在哪里能找到出租车？
+I need to make a reservation.
+我需要预定一个位置。
+Can I have a glass of water?
+我可以要一杯水吗？
+What time is the flight?
+飞机几点起飞？
+Could you pick me up at seven?
+你能7点来接我吗？
+Let's go shopping tomorrow.
+明天我们去购物吧。
+Do you want to come with me?
+你想和我一起去吗？
+How much is the ticket?
+票多少钱？
+I'll see you at four o'clock.
+我4点钟见你。
+Can you speak a little slower.
+你能说慢一点吗？
+I need to call a taxi.
+我需要叫出租车。
+Can you help me find my phone?
+你能帮我找到手机吗？
+I'm meeting a friend for lunch.
+我和朋友去吃午餐。
+I'll wait for you outside.
+我在外面等你。
+Can you please repeat that.
+你能再说一遍吗？
+Let's go to the cinema tonight.
+我们今晚去看电影吧。
+I need to finish this by five.
+我需要在5点之前完成这个。
+Where's the nearest supermarket?
+最近的超市在哪里？
+Can you come here for a minute.
+你能过来一下吗？
+What's your phone number?
+你的电话号码是多少？
+Let's go grab a drink after work.
+下班后我们去喝一杯吧。
+Do you want to go for a walk later?
+待会儿一起去散步吗？
+I'm waiting for my order.
+我在等我的订单。
+How long will you be here?
+你在这里待多久？
+I need to grab some lunch.
+我得去吃个午饭。
+Let's meet at the bus stop.
+我们在公交车站见。
+What time does the store close?
+这家商店几点关门？
+Can you take a picture of us?
+你能给我们拍张照片吗？
+What's your email address?
+你的电子邮件地址是什么？
+I need to finish this report.
+我需要完成这份报告。
+Where can I park my car?
+我能把车停在哪里？
+Do you need a ride?
+你需要搭车吗？
+What's the best restaurant around here?
+这里最好吃的餐厅是哪家？
+I'm heading to the office.
+我正往办公室去。
+Could you pass me the salt?
+请把盐递给我好吗？
+I'm so tired I can barely keep my eyes open.
+我太累了，眼睛都睁不开了。
+What time does your flight leave?
+你的航班几点起飞？
+I need to go to the bank.
+我要去银行。
+Can you make a reservation for two?
+你能为我们预定两个人的位置吗？
+Do you want to hang out this weekend?
+你周末想一起出去玩吗？
+How much DOI owe you?
+我欠你多少钱？
+I'm waiting for my friend.
+我在等朋友。
+Can you help me with these bags?
+你能帮我拿这些袋子吗？
+I'm going out with some friends tonight.
+我今晚和朋友们出去。
+How DOI get to the nearest metro station.
+我怎么到最近的地铁站？
+I'm getting a little hungry.
+我有点饿了。
+What time does the train arrive?
+火车几点到达？
+I'm going to take a break.
+我要休息一下。
+Can you send me your address?
+你能把你的地址发给我吗？
+I'll pick up some coffee.
+我去买点咖啡。
+Could you let me know when you're available?
+你能告诉我你什么时候有空吗？
+I need to go home early today.
+我今天需要早点回家。
+Do you have any plans for the holiday?
+你假期有什么计划吗？
+How do you like your coffee?
+你喜欢怎样的咖啡？
+What's your favorite type of music?
+你最喜欢的音乐类型是什么？
+I'll see you in a few minutes.
+几分钟后见。
+Can I have the menu please?
+请给我菜单。
+Let me know if you need help with anything.
+如果你需要帮助，告诉我。
+How much longer until we get there?
+我们还要多久才能到那里？
+I'm running a little late.
+我有点迟到。
+I'll take care of that.
+我来处理这件事。
